@@ -81,7 +81,7 @@ and visualized interactively in Power BI.
 
 Purpose:
 Fetches historical stock data from the Yahoo Finance API using Python (yfinance), then writes raw CSV files into the Azure Data Lake Storage (ADLS) raw zone.
-Located in: [azure_databricks_pyspark_stock_data_lakehouse.ipynb](notebooks/aws_databricks_pyspark_stock_data_lakehouse.ipynb)
+Located in: [azure_pyspark_etl.ipynb](notebooks/azure_pyspark_etl.ipynb)
 
 ```
 try:
@@ -94,8 +94,8 @@ Initializes the data lakehouse pipeline by ingesting external market data into t
 ### Step 2. Transformation (Databricks — PySpark → ADLS Processed)
 
 Purpose:
-Cleans and standardizes raw stock data, computes technical indicators (SMA, RSI, MACD, Bollinger Bands), and writes results to the Processed layer in ADLS as Parquet files.
-Located in: notebooks/Azure_Databricks_PySpark_Stock_Lakehouse.ipynb
+Cleans and standardizes raw stock data, computes technical indicators (SMA, RSI, MACD, Bollinger Bands), and writes results to the Processed layer in ADLS as Parquet files. (In this project, I only add SMA_5 as a new feature, more details on the AWS project)
+Located in: [azure_pyspark_etl.ipynb](notebooks/azure_pyspark_etl.ipynb)
 
 ```
 windowSpec = Window.partitionBy("ticker").orderBy("date").rowsBetween(-4, 0)
@@ -108,13 +108,14 @@ Implements the PySpark-based ETL job that transforms raw CSVs into clean, analyt
 ### Step 3. Feature Engineering (PySpark → ADLS Curated)
 
 Purpose:
-Adds feature layers such as moving averages, volatility, RSI, MACD, and buy/sell signal flags, saving the enriched results in the Curated ADLS zone.
-Located in: notebooks/Azure_Databricks_PySpark_Stock_Lakehouse.ipynb
+Adds feature layers such as moving averages, volatility, RSI, MACD, and buy/sell signal flags, saving the enriched results in the Curated ADLS zone. (In this project, I only add SMA_5 as a new feature, more details on the AWS project)
+Located in: [azure_pyspark_etl.ipynb](notebooks/azure_pyspark_etl.ipynb)
 
 ```
 curated_path = f"abfss://curated@{storage_account_name}.dfs.core.windows.net/yfinance_curated"
 df_sma.write.mode("overwrite").parquet(curated_path)
 ```
+![azure](screenshots/databrick_display.png)
 
 Summary:
 Transforms processed datasets into a feature-rich, partitioned Parquet layer optimized for analytics and downstream SQL querying.
@@ -123,7 +124,7 @@ Transforms processed datasets into a feature-rich, partitioned Parquet layer opt
 
 Purpose:
 Registers the curated Parquet folder as an external table under Unity Catalog for querying and governance.
-![aws_s3](screenshots/aws_athena/athena_query.png)
+![azure](screenshots/azure_dashboard.png)
 
 ```
 CREATE TABLE IF NOT EXISTS default.yfinance_curated
@@ -139,15 +140,15 @@ Makes curated data queryable via Databricks SQL, Synapse, or Power BI, establish
 Purpose:
 Runs analytical SQL queries and creates visual dashboards for stock performance, moving averages, and technical indicators.
 Located in: [screenshots](screenshots/)
-![aws_s3](screenshots/powerbi_1.png)
-![aws_s3](screenshots/powerbi_2.png)
+![azure](screenshots/powerbi_1.png)
+![azure](screenshots/powerbi_2.png)
 
 ```
 SELECT ticker, AVG(close) AS avg_close, MAX(close) AS max_close
 FROM default.yfinance_curated
 GROUP BY ticker;
 ```
-
+![azure](screenshots/sql_dashboard.png)
 Summary:
 Delivers cloud-based interactive analysis using Synapse SQL or Power BI directly connected to the curated Parquet layer in ADLS.
 
