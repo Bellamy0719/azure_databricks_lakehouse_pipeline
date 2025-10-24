@@ -158,14 +158,14 @@ Delivers cloud-based interactive analysis using Synapse SQL or Power BI directly
 ```
 databricks-azure-stock-lakehouse/
 ├── notebooks/
-│   └── Azure_Databricks_PySpark_Stock_Lakehouse.ipynb     # End-to-end ETL and feature engineering
+│   └── azure_pyspark_etl.ipynb     # End-to-end ETL and feature engineering
 │
 ├── screenshots/
-│   ├── azure_adls/        # ADLS Gen2 multi-layer folder structure
-│   ├── databricks/        # Databricks ETL execution
-│   ├── unity_catalog/     # Table + credential configuration
-│   ├── azure_synapse/     # SQL query examples
-│   └── power_bi/          # Dashboard visuals
+│   ├── sql_dashboard/       
+│   ├── databrick_display/      
+│   ├── azure_dashboard/     
+│   ├── power_bi1/        
+│   └── power_bi2/         
 │
 ├── README.md
 └── LICENSE
