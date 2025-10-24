@@ -4,7 +4,7 @@ End-to-end ETL pipeline on Azure using Databricks, PySpark, and ADLS Gen2 by aut
 ### Multi-Cloud Architecture
 This project has been reimplemented on AWS(main) by using **Databricks + S3 + Glue + Athena + QuickSight** for identical ETL and analytical workflows with more details
 ### >  Check out the AWS Implementation 
-> [aws-kinesis-pyspark-streaming-pipeline](https://github.com/Bellamy0719/aws-pyspark-data-lakehouse-pipeline)
+> [aws-pyspark-data-lakehouse-pipeline](https://github.com/Bellamy0719/aws-pyspark-data-lakehouse-pipeline)
 
 ### Project Overview
 
@@ -123,7 +123,7 @@ Transforms processed datasets into a feature-rich, partitioned Parquet layer opt
 
 Purpose:
 Registers the curated Parquet folder as an external table under Unity Catalog for querying and governance.
-Located in: sql/create_yfinance_table.sql
+![aws_s3](screenshots/aws_athena/athena_query.png)
 
 ```
 CREATE TABLE IF NOT EXISTS default.yfinance_curated
@@ -138,7 +138,9 @@ Makes curated data queryable via Databricks SQL, Synapse, or Power BI, establish
 
 Purpose:
 Runs analytical SQL queries and creates visual dashboards for stock performance, moving averages, and technical indicators.
-Located in: visualizations/powerbi_dashboard.pbix
+Located in: [screenshots](screenshots/)
+![aws_s3](screenshots/powerbi_1.png)
+![aws_s3](screenshots/powerbi_2.png)
 
 ```
 SELECT ticker, AVG(close) AS avg_close, MAX(close) AS max_close
